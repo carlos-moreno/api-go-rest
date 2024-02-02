@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"strconv"
 
 	"github.com/carlos-moreno/api-go-rest/database"
 	"github.com/carlos-moreno/api-go-rest/models"
@@ -24,10 +23,8 @@ func TodasPersonalidades(w http.ResponseWriter, r *http.Request) {
 func RetornaUmaPersonalidade(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id := vars["id"]
+	var p models.Personalidade
+	database.DB.First(&p, id)
 
-	for _, personalidade := range models.Personalidades {
-		if strconv.Itoa(personalidade.Id) == id {
-			json.NewEncoder(w).Encode(personalidade)
-		}
-	}
+	json.NewEncoder(w).Encode(p)
 }
